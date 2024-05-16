@@ -7,14 +7,13 @@ import java.security.ProtectionDomain;
 
 /**
  * 使用字节码操作库csm直接动态增强目标类：在目标方法执行前后输出系统时间
- *
  */
 public class TimeTracingTransformer implements ClassFileTransformer {
 
     @Override
     public byte[] transform(ClassLoader loader, String className, Class<?> classBeingRedefined,
                             ProtectionDomain protectionDomain, byte[] classfileBuffer) {
-        if ("Test".equals(className)) {
+        if ("com/Test".equals(className)) {
             ClassReader cr = new ClassReader(classfileBuffer);
             ClassWriter cw = new ClassWriter(cr, ClassWriter.COMPUTE_MAXS);
             ClassVisitor cv = new TimeTracingClassVisitor(cw);
@@ -27,7 +26,7 @@ public class TimeTracingTransformer implements ClassFileTransformer {
 
     private static class TimeTracingClassVisitor extends ClassVisitor {
 
-        private final String METHOD_NAME = "main";
+        private final String METHOD_NAME = "sum";
 
         public TimeTracingClassVisitor(ClassVisitor cv) {
             super(Opcodes.ASM5, cv);

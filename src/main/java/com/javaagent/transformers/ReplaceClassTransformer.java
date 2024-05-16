@@ -14,8 +14,7 @@ import java.security.ProtectionDomain;
 public class ReplaceClassTransformer implements ClassFileTransformer {
     @Override
     public byte[] transform(ClassLoader loader, String className, Class<?> classBeingRedefined, ProtectionDomain protectionDomain, byte[] classfileBuffer) throws IllegalClassFormatException {
-        System.out.println("loader: " + loader + " -> " + className);
-        if ("Test".equals(className)) {
+        if ("com/Test".equals(className)) {
             Path path = Paths.get("D:/IdeaProjects/JavaAgentDemo2/src/main/resources/Test.class");
             try (FileInputStream in = new FileInputStream(path.toFile()); ByteArrayOutputStream out = new ByteArrayOutputStream()) {
                 int len = -1;
@@ -28,6 +27,7 @@ public class ReplaceClassTransformer implements ClassFileTransformer {
                 e.printStackTrace();
             }
         }
-        return new byte[0];
+        // 其他类正常返回
+        return classfileBuffer;
     }
 }
